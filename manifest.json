@@ -1,0 +1,15 @@
+  {
+    "name": "AWS Console Tweaks",
+    "version": "0.1",
+    "description": "Some improvements and extra functionalitys to the AWS Console",
+    "manifest_version": 2,
+    "permissions": [
+        "notifications"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["https://s3.console.aws.amazon.com/s3/home*"],
+            "js" : ["s3_home.js"]
+        }
+    ]
+  }
