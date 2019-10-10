@@ -28,9 +28,43 @@ function copyTextToClipboard(text) {
 
 
 // Tweaks
+function createS3BucketNameCopyButton() {
+    const timerId = setInterval(function() {
+        if (document.querySelectorAll("td.bucket").length == 0) {
+            return
+        }
+
+        if (document.querySelector("a.extension-copy-button")) {
+            return
+        }
+
+        clearInterval(timerId);
+        [].forEach.call(document.querySelectorAll("td.bucket"), function(title) {
+            const copyButton = document.createElement('a')
+            copyButton.innerText = "\u2398"
+            copyButton.style.fontSize = "24px"
+            copyButton.classList.add("extension-copy-button")
+            copyButton.onclick = function(){
+                return function() {
+                    copyTextToClipboard(title.querySelector("span.list-view-item-name").innerText)
+
+                    const copied = document.createElement("span")
+                    copied.innerText = "copied"
+                    copied.style.fontSize = "10px"
+                    copyButton.append(copied)
+
+                    return false
+                }
+            }()
+            title.prepend(copyButton)
+        });
+
+    }, 200);
+}
+
 function createS3PathCopyButton() {
     const breadcrumb = document.querySelector("nav.awsui-breadcrumb-list")
-    console.log(breadcrumb)
+    if (!breadcrumb) { return }
 
     const copyButton = document.createElement('a')
     copyButton.innerText = "\u2398"
@@ -69,8 +103,6 @@ setInterval(function() {
         latestUrl = window.location.href
 
         createS3PathCopyButton()
+        createS3BucketNameCopyButton()
     }
 }, 500)
-
-// Initialize everything once
-createS3PathCopyButton()

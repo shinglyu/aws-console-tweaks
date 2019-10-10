@@ -8,12 +8,8 @@
     ],
     "content_scripts": [
         {
-            "matches": ["https://s3.console.aws.amazon.com/s3/home*"],
-            "js" : ["s3_home.js"]
-        },
-        {
             "matches": ["https://s3.console.aws.amazon.com/s3/*"],
-            "js" : ["s3_bucket.js"]
+            "js" : ["s3.js"]
         }
     ]
   }
