@@ -25,17 +25,31 @@ function copyTextToClipboard(text) {
   document.body.removeChild(copyFrom);
 }
 
-setTimeout(function() { // TODO: retry until the elements appear
+const timerId = setInterval(function() {
+    if (document.querySelectorAll("td.bucket").length == 0) {
+        return
+    }
+
     [].forEach.call(document.querySelectorAll("td.bucket"), function(title) {
         console.log(title)
         const copyButton = document.createElement('a')
         copyButton.innerText = "\u2398"
-        copyButton.style.fontSize = "24px";
+        copyButton.style.fontSize = "24px"
+        copyButton.setAttribute("ng-click", "$event.stopPropagation()")
         copyButton.onclick = function(){
             return function() {
                 copyTextToClipboard(title.querySelector("span.list-view-item-name").innerText)
+
+                const copied = document.createElement("span")
+                copied.innerText = "copied"
+                copied.style.fontSize = "10px"
+                copyButton.append(copied)
+
+                return false
             }
         }()
         title.prepend(copyButton)
     });
-}, 1000);
+
+    clearInterval(timerId)
+}, 200);
